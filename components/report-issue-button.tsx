@@ -105,7 +105,6 @@ export function ReportIssueButton() {
       setOpen(false)
     } else {
       setError(result.error || "Falha ao enviar seu relatorio. Por favor, tente novamente.")
-      console.log(error)
 
       // Ensure the error message is displayed
       toast({

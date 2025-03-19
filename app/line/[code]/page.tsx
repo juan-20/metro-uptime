@@ -12,8 +12,6 @@ export default async function LinePage({ params }: { params: { code: string } })
     notFound()
   }
 
-  console.log(lineData)
-
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">

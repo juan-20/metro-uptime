@@ -322,7 +322,7 @@ export function AdminDashboard({ lines, recentReports }: AdminDashboardProps) {
                 {isUpdating ? "Atualizando..." : "Atualizar Status"}
               </Button>
             </DialogFooter>
-          </DialogContent>s
+          </DialogContent>
         </Dialog>
       </div>
     </PasswordProtection>

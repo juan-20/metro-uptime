@@ -324,7 +324,6 @@ export async function updateMetroLine(id: number, data: { name?: string; color?:
 
 export async function updateLineStatus(lineId: number, status: StatusType, message?: string) {
   try {
-    console.log(lineId, status, message)
     // First update the current status to not current
     await prisma.lineStatus.updateMany({
       where: {
