@@ -58,12 +58,10 @@ export function LineDetails({ lineData }: LineDetailsProps) {
     }
   }
 
-  console.log(lineData)
-
   const statusDetails = getStatusDetails(lineData.status)
 
   return (
-    <div className="mb-8">
+    <div className="mb-8 w-screen">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div className="flex items-center gap-3">
           <div className="w-6 h-6 rounded-full" style={{ backgroundColor: lineData.color }}></div>
@@ -80,28 +78,28 @@ export function LineDetails({ lineData }: LineDetailsProps) {
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="stations">Stations</TabsTrigger>
-          <TabsTrigger value="reports">User Reports</TabsTrigger>
+          <TabsTrigger value="overview">Geral</TabsTrigger>
+          <TabsTrigger value="stations">Estações</TabsTrigger>
+          <TabsTrigger value="reports">Relatório de usuários</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card className="lg:col-span-2">
               <CardHeader>
                 <CardTitle>Histórico de problemas</CardTitle>
                 <CardDescription>Número de problemas relatados ao longo do tempo</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="w-screen">
                 {lineData.issueHistory ? (
-                  <ChartContainer
+                  <ChartContainer 
                     config={{
                       issues: {
                         label: "Issues",
                         color: lineData.color,
                       },
                     }}
-                    className="h-80"
+                    className="h-80 w-fit"
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={lineData.issueHistory} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>

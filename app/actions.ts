@@ -240,6 +240,7 @@ export async function submitIssueReport(formData: FormData) {
       },
     })
 
+    // TODO: Deixar o numero no banco paramelhor controle
     // if there are many recent reports, update the status
     if (recentReports.length >= 5 && status === "stopped") {
       // Close current status
