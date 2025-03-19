@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { PostHogProvider } from './providers'
 import './globals.css'
+import ProgressBar from '@/components/ProgressBar';
 
 export const metadata: Metadata = {
   title: 'metro-uptime',
@@ -21,11 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
+      <ProgressBar />
       <body>
         <PostHogProvider>
-            {children}
+          {children}
         </PostHogProvider>
-        </body>
+      </body>
     </html>
   )
 }

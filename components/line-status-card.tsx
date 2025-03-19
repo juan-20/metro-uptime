@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Clock, AlertTriangle, CheckCircle, AlertCircle } from "lucide-react"
+import { Clock, AlertTriangle, CheckCircle, AlertCircle, LoaderCircle  } from "lucide-react"
 
 type LineStatus = "normal" | "delayed" | "stopped"
 
@@ -20,6 +20,7 @@ export interface LineStatusCardProps {
 
 export function LineStatusCard({ id, name, code, color, status, lastUpdated, statusMessage }: LineStatusCardProps) {
   const [expanded, setExpanded] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const getStatusDetails = (status: LineStatus) => {
     switch (status) {
@@ -82,11 +83,25 @@ export function LineStatusCard({ id, name, code, color, status, lastUpdated, sta
         )}
       </CardContent>
       <CardFooter className="flex justify-between pt-0">
-        <button onClick={() => setExpanded(!expanded)} className="text-sm text-primary hover:underline">
+        <button 
+          onClick={() => {
+            setExpanded(!expanded);
+          }} 
+          className="text-sm text-primary hover:underline"
+        >
           {expanded ? "Mostrar menos" : "Mostrar mais"}
         </button>
         <Link href={`/line/${code}`} className="text-sm text-primary hover:underline">
-          Ver detalhes
+          <button onClick={() => setLoading(true)}>
+            {loading ? (
+              <div className="flex justify-center items-center">
+                <LoaderCircle  className="h-4 w-4 mr-1 animate-spin" />
+                Carregando...
+              </div>
+            ) : (
+              "Ver detalhes"
+            )}
+          </button>
         </Link>
       </CardFooter>
     </Card>
