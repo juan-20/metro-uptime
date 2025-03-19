@@ -1,3 +1,5 @@
+"use client"
+import { useEffect, useState } from "react";
 import Link from "next/link"
 import { LineStatusCard, LineStatusCardProps } from "@/components/line-status-card"
 import { StatusFilter } from "@/components/status-filter"
@@ -15,13 +17,17 @@ interface MetroLine {
   message?: string;
 }
 
-export default async function Home() {
-  const lines = await getMetroLines();
-  const timeZone = 'America/Sao_Paulo';
-  const cacheDuration = 5 * 60 * 1000;
-  const lastUpdated = new Date().getTime();
-  const nextUpdate = new Date(lastUpdated + cacheDuration);
-  const initialTimeLeft = nextUpdate.getTime() - lastUpdated;
+export default function Home() {
+  const [lines, setLines] = useState<MetroLine[]>([]);
+
+  useEffect(() => {
+    const fetchMetroLines = async () => {
+      const fetchedLines = await getMetroLines();
+      setLines(fetchedLines);
+    };
+
+    fetchMetroLines();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -79,22 +85,6 @@ export default async function Home() {
           </p>
         </div>
       </footer>
-
-      <script dangerouslySetInnerHTML={{ __html: `
-        (function() {
-          const updateCountdown = () => {
-            const nextUpdateElement = document.getElementById('next-update');
-            let timeLeft = ${initialTimeLeft};
-            setInterval(() => {
-              timeLeft -= 1000;
-              const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-              const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-              nextUpdateElement.textContent = 'Próxima atualização em: ' + minutes + 'm ' + seconds + 's';
-            }, 1000);
-          };
-          updateCountdown();
-        })();
-      `}} />
     </div>
   );
 }

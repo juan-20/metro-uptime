@@ -11,6 +11,11 @@ type LineDetailsProps = {
   lineData: any
 }
 
+type IssueHistoryEntry = {
+  time: string; // or whatever type it is
+  issues: number; // assuming issues is a number
+};
+
 export function LineDetails({ lineData }: LineDetailsProps) {
   const [activeTab, setActiveTab] = useState("overview")
   const [currentTime, setCurrentTime] = useState("")
@@ -52,6 +57,8 @@ export function LineDetails({ lineData }: LineDetailsProps) {
         }
     }
   }
+
+  console.log(lineData)
 
   const statusDetails = getStatusDetails(lineData.status)
 
@@ -97,7 +104,13 @@ export function LineDetails({ lineData }: LineDetailsProps) {
                   className="h-80"
                 >
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={lineData.issueHistory} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                    <LineChart
+                      data={lineData.issueHistory.map((entry: IssueHistoryEntry) => ({
+                        ...entry,
+                        time: new Date(`1970-01-01T${entry.time}:00`).toLocaleTimeString(),
+                      }))}
+                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="time" />
                       <YAxis />
