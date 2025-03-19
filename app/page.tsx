@@ -48,8 +48,6 @@ export default async function Home() {
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h2 className="text-2xl font-semibold text-gray-900">Status Atual</h2>
-            <p className="text-gray-500">Última atualização: {format(new Date(), 'yyyy-MM-dd HH:mm:ssXXX', { timeZone })}</p>
-            <p className="text-gray-500" id="next-update">Próxima atualização em: {Math.floor((initialTimeLeft % (1000 * 60 * 60)) / (1000 * 60))}m {Math.floor((initialTimeLeft % (1000 * 60)) / 1000)}s</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
             {/* TODO: Add filter status */}

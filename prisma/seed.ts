@@ -8,7 +8,6 @@ async function seedDatabase() {
     // Check if we already have data
     const lineCount = await prisma.metroLine.count()
     if (lineCount > 0) {
-      console.log("Database already seeded")
       return
     }
 
@@ -201,7 +200,6 @@ async function seedDatabase() {
       })
     }
 
-    console.log("Database seeded successfully")
   } catch (error) {
     console.error("Error seeding database:", error)
     throw error

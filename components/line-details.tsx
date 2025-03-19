@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Clock, AlertTriangle, CheckCircle, AlertCircle } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -13,6 +13,16 @@ type LineDetailsProps = {
 
 export function LineDetails({ lineData }: LineDetailsProps) {
   const [activeTab, setActiveTab] = useState("overview")
+  const [currentTime, setCurrentTime] = useState("")
+
+  useEffect(() => {
+    const updateTime = () => {
+      setCurrentTime(new Date().toLocaleTimeString())
+    }
+    updateTime()
+    const intervalId = setInterval(updateTime, 1000)
+    return () => clearInterval(intervalId)
+  }, [])
 
   const getStatusDetails = (status: string) => {
     switch (status) {
@@ -57,7 +67,7 @@ export function LineDetails({ lineData }: LineDetailsProps) {
         </div>
         <div className="flex items-center text-sm text-gray-500">
           <Clock className="h-4 w-4 mr-1" />
-          <span>Atualizado em: {new Date().toLocaleTimeString()}</span>
+          <span>Atualizado em: {currentTime}</span>
         </div>
       </div>
 
