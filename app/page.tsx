@@ -18,7 +18,7 @@ interface MetroLine {
 export default async function Home() {
   const lines = await getMetroLines();
   const timeZone = 'America/Sao_Paulo';
-  const cacheDuration = 5 * 60 * 1000; // 5 minutes in milliseconds
+  const cacheDuration = 5 * 60 * 1000;
   const lastUpdated = new Date().getTime();
   const nextUpdate = new Date(lastUpdated + cacheDuration);
   const initialTimeLeft = nextUpdate.getTime() - lastUpdated;

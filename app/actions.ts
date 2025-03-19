@@ -213,6 +213,7 @@ export async function submitIssueReport(formData: FormData) {
         issueType,
         description,
         status,
+        reportedAt: new Date().toISOString(),
       },
     })
 
@@ -433,7 +434,11 @@ export async function getRecentReports(limit = 10) {
       },
     })
 
-    return reports
+    // Convert timestamps to local timezone when displaying
+    return reports.map(report => ({
+      ...report,
+      reportedAt: new Date(report.reportedAt).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+    }))
   } catch (error) {
     console.error("Error fetching recent reports:", error)
     return []
