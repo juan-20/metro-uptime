@@ -93,41 +93,38 @@ export function LineDetails({ lineData }: LineDetailsProps) {
                 <CardDescription>Número de problemas relatados ao longo do tempo</CardDescription>
               </CardHeader>
               <CardContent>
-                {lineData.issueHistory ? null : <p>Nenhum dado recente encontrado</p>}
-                <ChartContainer
-                  config={{
-                    issues: {
-                      label: "Issues",
-                      color: lineData.color,
-                    },
-                  }}
-                  className="h-80"
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                      data={lineData.issueHistory.map((entry: IssueHistoryEntry) => ({
-                        ...entry,
-                        time: new Date(`1970-01-01T${entry.time}:00`).toLocaleTimeString(),
-                      }))}
-                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="time" />
-                      <YAxis />
-                      <ChartTooltip
-                        content={<ChartTooltipContent indicator="line" nameKey="time" />}
-                      />
-                      <Line
-                        type="monotone"
-                        dataKey="issues"
-                        stroke={lineData.color}
-                        strokeWidth={2}
-                        dot={{ r: 4 }}
-                        activeDot={{ r: 6 }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
+                {lineData.issueHistory ? (
+                  <ChartContainer
+                    config={{
+                      issues: {
+                        label: "Issues",
+                        color: lineData.color,
+                      },
+                    }}
+                    className="h-80"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={lineData.issueHistory} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="time" />
+                        <YAxis />
+                        <ChartTooltip
+                          content={<ChartTooltipContent indicator="line" nameKey="time" />}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="issues"
+                          stroke={lineData.color}
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                          activeDot={{ r: 6 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                ) : (
+                  <p>Nenhum dado recente encontrado</p>
+                )}
               </CardContent>
             </Card>
 
