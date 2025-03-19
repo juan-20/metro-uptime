@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache"
 import type { StatusType } from "@prisma/client"
 import { headers } from "next/headers"
 
+export type { StatusType };
+
 export async function getMetroLines() {
   try {
     const lines = await prisma.metroLine.findMany({

@@ -2,10 +2,26 @@ import Link from "next/link"
 import { LineStatusCard, LineStatusCardProps } from "@/components/line-status-card"
 import { StatusFilter } from "@/components/status-filter"
 import { ReportIssueButton } from "@/components/report-issue-button"
-import { getMetroLines } from "./actions"
+import { getMetroLines, StatusType } from "./actions"
+import { format } from 'date-fns-tz'
+
+// Define the type for the metro line
+interface MetroLine {
+  id: number;
+  name: string;
+  code: string;
+  color: string;
+  status: StatusType;
+  message?: string;
+}
 
 export default async function Home() {
-  const lines = await getMetroLines()
+  const lines = await getMetroLines();
+  const timeZone = 'America/Sao_Paulo';
+  const cacheDuration = 5 * 60 * 1000; // 5 minutes in milliseconds
+  const lastUpdated = new Date().getTime();
+  const nextUpdate = new Date(lastUpdated + cacheDuration);
+  const initialTimeLeft = nextUpdate.getTime() - lastUpdated;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -31,8 +47,9 @@ export default async function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-semibold text-gray-900">Current Status</h2>
-            <p className="text-gray-500">Última atualização: {new Date().toLocaleString()}</p>
+            <h2 className="text-2xl font-semibold text-gray-900">Status Atual</h2>
+            <p className="text-gray-500">Última atualização: {format(new Date(), 'yyyy-MM-dd HH:mm:ssXXX', { timeZone })}</p>
+            <p className="text-gray-500" id="next-update">Próxima atualização em: {Math.floor((initialTimeLeft % (1000 * 60 * 60)) / (1000 * 60))}m {Math.floor((initialTimeLeft % (1000 * 60)) / 1000)}s</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
             {/* TODO: Add filter status */}
@@ -64,7 +81,23 @@ export default async function Home() {
           </p>
         </div>
       </footer>
+
+      <script dangerouslySetInnerHTML={{ __html: `
+        (function() {
+          const updateCountdown = () => {
+            const nextUpdateElement = document.getElementById('next-update');
+            let timeLeft = ${initialTimeLeft};
+            setInterval(() => {
+              timeLeft -= 1000;
+              const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+              const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+              nextUpdateElement.textContent = 'Próxima atualização em: ' + minutes + 'm ' + seconds + 's';
+            }, 1000);
+          };
+          updateCountdown();
+        })();
+      `}} />
     </div>
-  )
+  );
 }
 
