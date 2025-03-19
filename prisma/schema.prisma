@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model MetroLine {
+  id         Int           @id @default(autoincrement())
+  name       String
+  code       String        @unique
+  color      String
+  createdAt  DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime      @default(now()) @map("updated_at") @db.Timestamptz(6)
+  reports    IssueReport[]
+  lineStatus LineStatus[]
+  stations   Station[]
+
+  @@map("metro_lines")
+}
+
+model Station {
+  id        Int           @id @default(autoincrement())
+  name      String
+  lineId    Int           @map("line_id")
+  position  Int
+  createdAt DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime      @default(now()) @map("updated_at") @db.Timestamptz(6)
+  reports   IssueReport[]
+  line      MetroLine     @relation(fields: [lineId], references: [id], onDelete: Cascade)
+
+  @@unique([lineId, name])
+  @@map("stations")
+}
+
+model LineStatus {
+  id        Int        @id @default(autoincrement())
+  lineId    Int        @map("line_id")
+  status    StatusType @default(normal)
+  message   String?
+  startedAt DateTime   @default(now()) @map("started_at") @db.Timestamptz(6)
+  endedAt   DateTime?  @map("ended_at") @db.Timestamptz(6)
+  isCurrent Boolean    @default(true) @map("is_current")
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime   @default(now()) @map("updated_at") @db.Timestamptz(6)
+  line      MetroLine  @relation(fields: [lineId], references: [id], onDelete: Cascade)
+
+  @@map("line_status")
+}
+
+model IssueReport {
+  id          Int        @id @default(autoincrement())
+  lineId      Int        @map("line_id")
+  stationId   Int?       @map("station_id")
+  issueType   String     @map("issue_type")
+  description String?
+  status      StatusType
+  reportedAt  DateTime   @default(now()) @map("reported_at") @db.Timestamptz(6)
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime   @default(now()) @map("updated_at") @db.Timestamptz(6)
+  line        MetroLine  @relation(fields: [lineId], references: [id], onDelete: Cascade)
+  station     Station?   @relation(fields: [stationId], references: [id])
+
+  @@map("issue_reports")
+}
+
+model ReportSubmission {
+  id          Int      @id @default(autoincrement())
+  ipAddress   String   @map("ip_address")
+  submittedAt DateTime @default(now()) @map("submitted_at") @db.Timestamptz(6)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("report_submissions")
+}
+
+enum StatusType {
+  normal
+  delayed
+  stopped
+
+  @@map("status_type")
+}
