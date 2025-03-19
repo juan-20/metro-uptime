@@ -3,7 +3,7 @@ import type { StatusType } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-async function main() {
+async function seedDatabase() {
   try {
     // Check if we already have data
     const lineCount = await prisma.metroLine.count()
@@ -210,9 +210,4 @@ async function main() {
   }
 }
 
-main()
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
-  })
-
+export { seedDatabase }
