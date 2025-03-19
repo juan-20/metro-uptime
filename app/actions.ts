@@ -88,9 +88,9 @@ export async function getLineDetails(code: string) {
       issueHistory: Array.isArray(hourlyReports)
         ? hourlyReports.map((hr: any) => ({
             time: new Date(hr.hour).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-            issues: Number(hr.count),
+            issues: Number(hr.count), // Ensure count is a number
           }))
-        : [],
+        : [], // Return an empty array if no reports
     }
   } catch (error) {
     console.error("Error fetching line details:", error)

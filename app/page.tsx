@@ -19,11 +19,13 @@ interface MetroLine {
 
 export default function Home() {
   const [lines, setLines] = useState<MetroLine[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMetroLines = async () => {
       const fetchedLines = await getMetroLines();
       setLines(fetchedLines);
+      setLoading(false);
     };
 
     fetchMetroLines();
@@ -62,20 +64,28 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {lines.map((line) => (
-            <LineStatusCard
-              key={line.id}
-              id={line.id}
-              name={line.name}
-              code={line.code}
-              color={line.color}
-              status={line.status}
-              statusMessage={line.message ?? ''}
-              lastUpdated={new Date().toISOString()}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="animate-pulse">
+            <div className="h-24 bg-gray-300 rounded mb-4"></div>
+            <div className="h-24 bg-gray-300 rounded mb-4"></div>
+            <div className="h-24 bg-gray-300 rounded mb-4"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {lines.map((line) => (
+              <LineStatusCard
+                key={line.id}
+                id={line.id}
+                name={line.name}
+                code={line.code}
+                color={line.color}
+                status={line.status}
+                statusMessage={line.message ?? ''}
+                lastUpdated={new Date().toISOString()}
+              />
+            ))}
+          </div>
+        )}
       </main>
 
       <footer className="bg-white border-t mt-12 flex justify-center align-bottom w-full bottom-0 sticky">
