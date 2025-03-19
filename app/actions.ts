@@ -86,10 +86,15 @@ export async function getLineDetails(code: string) {
       stations: line.stations,
       reports,
       issueHistory: Array.isArray(hourlyReports)
-        ? hourlyReports.map((hr: any) => ({
-            time: new Date(hr.hour).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-            issues: Number(hr.count), // Ensure count is a number
-          }))
+        ? hourlyReports.map((hr: any) => {
+            // Subtract 3 hours from the reported hour
+            const adjustedHour = new Date(hr.hour);
+            adjustedHour.setHours(adjustedHour.getHours() - 3);
+            return {
+              time: adjustedHour.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+              issues: Number(hr.count), // Ensure count is a number
+            };
+          })
         : [], // Return an empty array if no reports
     }
   } catch (error) {
