@@ -85,12 +85,12 @@ export function LineDetails({ lineData }: LineDetailsProps) {
 
         <TabsContent value="overview" className="mt-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="lg:col-span-2">
+            <Card className="">
               <CardHeader>
                 <CardTitle>Histórico de problemas</CardTitle>
                 <CardDescription>Número de problemas relatados ao longo do tempo</CardDescription>
               </CardHeader>
-              <CardContent className="w-screen">
+              <CardContent>
                 {lineData.issueHistory ? (
                   <ChartContainer 
                     config={{
