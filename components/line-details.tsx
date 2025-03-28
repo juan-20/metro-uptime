@@ -61,7 +61,7 @@ export function LineDetails({ lineData }: LineDetailsProps) {
   const statusDetails = getStatusDetails(lineData.status)
 
   return (
-    <div className="mb-8 w-screen">
+    <div className="mb-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div className="flex items-center gap-3">
           <div className="w-6 h-6 rounded-full" style={{ backgroundColor: lineData.color }}></div>
@@ -84,7 +84,7 @@ export function LineDetails({ lineData }: LineDetailsProps) {
         </TabsList>
 
         <TabsContent value="overview" className="mt-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <Card className="">
               <CardHeader>
                 <CardTitle>Histórico de problemas</CardTitle>
